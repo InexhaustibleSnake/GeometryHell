@@ -1,6 +1,10 @@
+// Project made by Alexey Guchmazov (Inexhaustible Snake) for educational purposes
+
 #include "Character/MainCharacter.h"
 #include "Components/InputComponent.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Components/ReflectionComponent.h"
 
 AMainCharacter::AMainCharacter()
 {
@@ -17,6 +21,12 @@ AMainCharacter::AMainCharacter()
 	GunMesh->SetupAttachment(ArmMesh);
 	GunMesh->CastShadow = false;
 	GunMesh->AttachTo(ArmMesh, "GripPoint");
+
+	ReflectionComponent = CreateDefaultSubobject<UReflectionComponent>("ReflectionComponent");
+
+	GetCharacterMovement()->MaxWalkSpeed = 800.0f;
+	GetCharacterMovement()->JumpZVelocity = 550.0f;
+	
 }
 
 void AMainCharacter::BeginPlay()
@@ -36,6 +46,12 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AMainCharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &AMainCharacter::StopJumping);
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AMainCharacter::Sprint);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AMainCharacter::StopSprinting);
+
+	DECLARE_DELEGATE_OneParam(FReflectionActivate, bool);
+	PlayerInputComponent->BindAction<FReflectionActivate>("Reflection", IE_Pressed, ReflectionComponent, &UReflectionComponent::Reflection, true);
+	PlayerInputComponent->BindAction<FReflectionActivate>("Reflection", IE_Released, ReflectionComponent, &UReflectionComponent::Reflection, false);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &AMainCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AMainCharacter::MoveRight);
@@ -51,4 +67,14 @@ void AMainCharacter::MoveForward(float Amount)
 void AMainCharacter::MoveRight(float Amount)
 {
 	AddMovementInput(GetActorRightVector(), Amount);
+}
+
+void AMainCharacter::Sprint()
+{
+	GetCharacterMovement()->MaxWalkSpeed = 1200.0f;
+}
+
+void AMainCharacter::StopSprinting()
+{
+	GetCharacterMovement()->MaxWalkSpeed = 800.0f;
 }

@@ -1,3 +1,5 @@
+// Project made by Alexey Guchmazov (Inexhaustible Snake) for educational purposes
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -6,6 +8,7 @@
 
 class UCameraComponent;
 class USkeletalMeshComponent;
+class UReflectionComponent;
 
 UCLASS()
 class GEOMETRYHELL_API AMainCharacter : public ACharacter
@@ -26,12 +29,15 @@ protected:
 		USkeletalMeshComponent* GunMesh;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		UCameraComponent* MainCamera;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		UReflectionComponent* ReflectionComponent;
 
 private:
 	void MoveForward(float Amount);
 	void MoveRight(float Amount);
 	
-
+	void Sprint();
+	void StopSprinting();
 
 	
 };
