@@ -24,12 +24,12 @@ void UReflectionComponent::Reflection(bool Active)
 
 	if (Active)
 	{
-		GetWorld()->GetTimerManager().SetTimer(ReflectionTimer, this, &UReflectionComponent::ReduceReflectionStamina, ReflectionReduceTimer, true, 0.0f);
+		GetWorld()->GetTimerManager().SetTimer(ReflectionTimer, this, &UReflectionComponent::ReduceReflectionStamina, ReflectionReduceRate, true, 0.0f);
 		UGameplayStatics::SetGlobalTimeDilation(GetWorld(), ReflectionPower);
 	}
 	else
 	{
-		GetWorld()->GetTimerManager().SetTimer(ReflectionTimer, this, &UReflectionComponent::RestoreReflectionStamina, ReflectionRestoreTimer, true, 0.0f);
+		GetWorld()->GetTimerManager().SetTimer(ReflectionTimer, this, &UReflectionComponent::RestoreReflectionStamina, ReflectionRestoreRate, true, 0.0f);
 		UGameplayStatics::SetGlobalTimeDilation(GetWorld(), ReflectionPower);
 	}
 }

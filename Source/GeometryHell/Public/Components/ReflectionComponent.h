@@ -30,11 +30,10 @@ protected:
 	    float ReflectionPower = 0.5f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Reflection")
-		float ReflectionRestoreTimer = 0.1f;
+		float ReflectionRestoreRate = 0.1f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Reflection")
-		float ReflectionReduceTimer = 0.1f;
-
+		float ReflectionReduceRate = 0.1f;
 
 	void ReduceReflectionStamina();
 	void RestoreReflectionStamina();

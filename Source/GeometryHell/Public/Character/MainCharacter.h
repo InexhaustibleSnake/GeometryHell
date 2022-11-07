@@ -9,6 +9,7 @@
 class UCameraComponent;
 class USkeletalMeshComponent;
 class UReflectionComponent;
+class UStaminaComponent;
 
 UCLASS()
 class GEOMETRYHELL_API AMainCharacter : public ACharacter
@@ -31,13 +32,11 @@ protected:
 		UCameraComponent* MainCamera;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		UReflectionComponent* ReflectionComponent;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		UStaminaComponent* StaminaComponent;
 
 private:
 	void MoveForward(float Amount);
 	void MoveRight(float Amount);
-	
-	void Sprint();
-	void StopSprinting();
 
-	
 };

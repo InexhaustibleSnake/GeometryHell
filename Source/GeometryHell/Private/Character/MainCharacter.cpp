@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/ReflectionComponent.h"
+#include "Components/StaminaComponent.h"
 
 AMainCharacter::AMainCharacter()
 {
@@ -23,10 +24,10 @@ AMainCharacter::AMainCharacter()
 	GunMesh->AttachTo(ArmMesh, "GripPoint");
 
 	ReflectionComponent = CreateDefaultSubobject<UReflectionComponent>("ReflectionComponent");
+	StaminaComponent = CreateDefaultSubobject<UStaminaComponent>("StaminaComponent");
 
 	GetCharacterMovement()->MaxWalkSpeed = 800.0f;
 	GetCharacterMovement()->JumpZVelocity = 550.0f;
-	
 }
 
 void AMainCharacter::BeginPlay()
@@ -46,8 +47,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AMainCharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &AMainCharacter::StopJumping);
-	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AMainCharacter::Sprint);
-	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AMainCharacter::StopSprinting);
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, StaminaComponent, &UStaminaComponent::Sprint);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, StaminaComponent, &UStaminaComponent::StopSprinting);
 
 	DECLARE_DELEGATE_OneParam(FReflectionActivate, bool);
 	PlayerInputComponent->BindAction<FReflectionActivate>("Reflection", IE_Pressed, ReflectionComponent, &UReflectionComponent::Reflection, true);
@@ -67,14 +68,4 @@ void AMainCharacter::MoveForward(float Amount)
 void AMainCharacter::MoveRight(float Amount)
 {
 	AddMovementInput(GetActorRightVector(), Amount);
-}
-
-void AMainCharacter::Sprint()
-{
-	GetCharacterMovement()->MaxWalkSpeed = 1200.0f;
-}
-
-void AMainCharacter::StopSprinting()
-{
-	GetCharacterMovement()->MaxWalkSpeed = 800.0f;
 }
