@@ -3,19 +3,23 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-#include "BaseEnemy.generated.h"
+#include "AIController.h"
+#include "BaseAIController.generated.h"
+
 
 UCLASS()
-class GEOMETRYHELL_API ABaseEnemy : public ACharacter
+class GEOMETRYHELL_API ABaseAIController : public AAIController
 {
 	GENERATED_BODY()
 
 public:
-	ABaseEnemy();
+
 
 protected:
-	virtual void BeginPlay() override;
 
+
+
+
+private:
 
 };
