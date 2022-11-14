@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "BaseEnemy.generated.h"
 
+class UBehaviorTree;
+
 UCLASS()
 class GEOMETRYHELL_API ABaseEnemy : public ACharacter
 {
@@ -13,6 +15,9 @@ class GEOMETRYHELL_API ABaseEnemy : public ACharacter
 
 public:
 	ABaseEnemy();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
+		UBehaviorTree* BehaviorTreeAsset;
 
 protected:
 	virtual void BeginPlay() override;

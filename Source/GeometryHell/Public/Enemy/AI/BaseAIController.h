@@ -6,6 +6,7 @@
 #include "AIController.h"
 #include "BaseAIController.generated.h"
 
+class UBaseAIPerceptionComponent;
 
 UCLASS()
 class GEOMETRYHELL_API ABaseAIController : public AAIController
@@ -14,10 +15,14 @@ class GEOMETRYHELL_API ABaseAIController : public AAIController
 
 public:
 
+	ABaseAIController();
 
 protected:
+	virtual void OnPossess(APawn* InPawn) override;
+	virtual void Tick(float DeltaTime) override;
 
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+		UBaseAIPerceptionComponent* BaseAIPerceptionComponent;
 
 
 private:
