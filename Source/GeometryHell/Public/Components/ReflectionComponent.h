@@ -16,10 +16,16 @@ public:
 
 	void Reflection(bool Active);
 
+	void UltraReflectionOn();
+	void UltraReflectionOff();
+
 protected:
 	virtual void BeginPlay() override;
 
 	FTimerHandle ReflectionTimer;
+
+	FTimerHandle UltraReflectionTimer;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Reflection")
 	    float ReflectionStamina;
 
@@ -35,11 +41,21 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Reflection")
 		float ReflectionReduceRate = 0.1f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UltraReflection")
+		float UltraReflectionPower = 0.05f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UltraReflection")
+		float UltraReflectionReduceRate = 0.1f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UltraReflection")
+		float PlayerDilationOnUltra = 2.0f;
+
 	void ReduceReflectionStamina();
+	void ReduceUltraReflectionStamina();
 	void RestoreReflectionStamina();
+
 	bool IsReflectionStaminaEmpty() const;
 	bool IsReflectionStaminaFull() const;
 
-private:
-		
+	AActor* GetPlayerActor() const;
 };

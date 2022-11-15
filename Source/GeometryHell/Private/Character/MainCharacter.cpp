@@ -41,7 +41,7 @@ void AMainCharacter::BeginPlay()
 void AMainCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 }
 
 void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -55,6 +55,9 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	DECLARE_DELEGATE_OneParam(FReflectionActivate, bool);
 	PlayerInputComponent->BindAction<FReflectionActivate>("Reflection", IE_Pressed, ReflectionComponent, &UReflectionComponent::Reflection, true);
 	PlayerInputComponent->BindAction<FReflectionActivate>("Reflection", IE_Released, ReflectionComponent, &UReflectionComponent::Reflection, false);
+
+	PlayerInputComponent->BindAction("UltraReflection", IE_Pressed, ReflectionComponent, &UReflectionComponent::UltraReflectionOn);
+	PlayerInputComponent->BindAction("UltraReflection", IE_Released, ReflectionComponent, &UReflectionComponent::UltraReflectionOff);
 
 	PlayerInputComponent->BindAction("ShootMainProjectile", IE_Pressed, WeaponComponent, &UWeaponComponent::StartFire);
 	PlayerInputComponent->BindAction("ShootMainProjectile", IE_Released, WeaponComponent, &UWeaponComponent::StopFire);
