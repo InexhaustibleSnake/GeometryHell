@@ -10,8 +10,6 @@ class UCameraComponent;
 class USkeletalMeshComponent;
 class UReflectionComponent;
 class UStaminaComponent;
-class UPlayerWeaponComponent;
-class UAnimMontage;
 
 UCLASS()
 class GEOMETRYHELL_API AMainCharacter : public ACharacter
@@ -22,10 +20,6 @@ public:
 	AMainCharacter();
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	FVector GetMuzzleLocation();
-
-
-	void PlayShotAnimaton();
 
 protected:
 	virtual void BeginPlay() override;
@@ -40,14 +34,9 @@ protected:
 		UReflectionComponent* ReflectionComponent;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		UStaminaComponent* StaminaComponent;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
-		UPlayerWeaponComponent* PlayerWeaponComponent;
-
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
-		UAnimMontage* ShootMontage;
 
 private:
 	void MoveForward(float Amount);
 	void MoveRight(float Amount);
+
 };
