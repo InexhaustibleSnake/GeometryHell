@@ -24,6 +24,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Projectile")
 		TSubclassOf<ABaseProjectile> MainProjectile;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Projectile")
+		float MainShootRate = 0.3f;
+
+	FTimerHandle ShootTimer;
+
 private:
 	void MainShot();
 	void MakeTrace(FHitResult& HitResult, const FVector TraceStart, const FVector TraceEnd);

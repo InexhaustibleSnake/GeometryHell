@@ -32,6 +32,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Properities")
 		float LifeSpan = 5.0f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Properities")
+		float Damage = 10.0f;
+
 	FVector ShotDirection;
     
 	UFUNCTION()

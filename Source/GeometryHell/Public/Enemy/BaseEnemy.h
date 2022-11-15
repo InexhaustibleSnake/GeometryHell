@@ -7,6 +7,8 @@
 #include "BaseEnemy.generated.h"
 
 class UBehaviorTree;
+class UBaseHealthBarWidget;
+class UTextRenderComponent;
 
 UCLASS()
 class GEOMETRYHELL_API ABaseEnemy : public ACharacter
@@ -22,5 +24,15 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		UBaseHealthBarWidget* BaseHealthBarWidget;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		UTextRenderComponent* HealthTextRender;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Properities")
+		float Health = 100.0f;
+
+   UFUNCTION()
+	  void OnTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 };

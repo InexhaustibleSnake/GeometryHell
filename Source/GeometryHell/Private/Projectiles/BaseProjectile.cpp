@@ -30,16 +30,12 @@ void ABaseProjectile::BeginPlay()
 
 void ABaseProjectile::OnCollision(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit)
 {
-	if (GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Some debug message!"));
+	OtherActor->TakeDamage(Damage, FDamageEvent{}, GetOwner()->GetInstigatorController(), GetOwner());
 	Destroy();
 }
-
-
 
 void ABaseProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 

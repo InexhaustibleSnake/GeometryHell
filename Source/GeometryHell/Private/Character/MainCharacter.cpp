@@ -56,7 +56,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction<FReflectionActivate>("Reflection", IE_Pressed, ReflectionComponent, &UReflectionComponent::Reflection, true);
 	PlayerInputComponent->BindAction<FReflectionActivate>("Reflection", IE_Released, ReflectionComponent, &UReflectionComponent::Reflection, false);
 
-	PlayerInputComponent->BindAction("ShootMainProjectile", IE_Released, WeaponComponent, &UWeaponComponent::StartFire);
+	PlayerInputComponent->BindAction("ShootMainProjectile", IE_Pressed, WeaponComponent, &UWeaponComponent::StartFire);
+	PlayerInputComponent->BindAction("ShootMainProjectile", IE_Released, WeaponComponent, &UWeaponComponent::StopFire);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &AMainCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AMainCharacter::MoveRight);

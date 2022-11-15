@@ -24,11 +24,12 @@ void UWeaponComponent::BeginPlay()
 
 void UWeaponComponent::StartFire()
 {
-	MainShot();
+	GetWorld()->GetTimerManager().SetTimer(ShootTimer, this, &UWeaponComponent::MainShot, MainShootRate, true, 0.0f);
 }
 
 void UWeaponComponent::StopFire()
 {
+	GetWorld()->GetTimerManager().ClearTimer(ShootTimer);
 }
 
 void UWeaponComponent::MainShot()
