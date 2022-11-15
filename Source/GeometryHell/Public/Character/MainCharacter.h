@@ -10,6 +10,7 @@ class UCameraComponent;
 class USkeletalMeshComponent;
 class UReflectionComponent;
 class UStaminaComponent;
+class UWeaponComponent;
 
 UCLASS()
 class GEOMETRYHELL_API AMainCharacter : public ACharacter
@@ -21,19 +22,22 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		USkeletalMeshComponent* GunMesh;
+
 protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		USkeletalMeshComponent* ArmMesh;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
-		USkeletalMeshComponent* GunMesh;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		UCameraComponent* MainCamera;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		UReflectionComponent* ReflectionComponent;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		UStaminaComponent* StaminaComponent;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		UWeaponComponent* WeaponComponent;
 
 private:
 	void MoveForward(float Amount);

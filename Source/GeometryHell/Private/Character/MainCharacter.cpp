@@ -6,6 +6,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/ReflectionComponent.h"
 #include "Components/StaminaComponent.h"
+#include "Components/WeaponComponent.h"
 
 AMainCharacter::AMainCharacter()
 {
@@ -25,6 +26,7 @@ AMainCharacter::AMainCharacter()
 
 	ReflectionComponent = CreateDefaultSubobject<UReflectionComponent>("ReflectionComponent");
 	StaminaComponent = CreateDefaultSubobject<UStaminaComponent>("StaminaComponent");
+	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>("WeaponComponent");
 
 	GetCharacterMovement()->MaxWalkSpeed = 800.0f;
 	GetCharacterMovement()->JumpZVelocity = 550.0f;
@@ -53,6 +55,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	DECLARE_DELEGATE_OneParam(FReflectionActivate, bool);
 	PlayerInputComponent->BindAction<FReflectionActivate>("Reflection", IE_Pressed, ReflectionComponent, &UReflectionComponent::Reflection, true);
 	PlayerInputComponent->BindAction<FReflectionActivate>("Reflection", IE_Released, ReflectionComponent, &UReflectionComponent::Reflection, false);
+
+	PlayerInputComponent->BindAction("ShootMainProjectile", IE_Released, WeaponComponent, &UWeaponComponent::StartFire);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &AMainCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AMainCharacter::MoveRight);
