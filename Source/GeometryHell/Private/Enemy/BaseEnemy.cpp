@@ -3,10 +3,14 @@
 #include "Enemy/BaseEnemy.h"
 #include "Enemy/UI/BaseHealthBarWidget.h"
 #include "Components/TextRenderComponent.h"
+#include "Components/StaticMeshComponent.h"
 
 ABaseEnemy::ABaseEnemy()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	CannonCube = CreateDefaultSubobject<UStaticMeshComponent>("CannonCube");
+	CannonCube->SetupAttachment(GetRootComponent());
 	
 	HealthTextRender = CreateDefaultSubobject<UTextRenderComponent>("HealthTextRender");
 	HealthTextRender->SetupAttachment(GetRootComponent());

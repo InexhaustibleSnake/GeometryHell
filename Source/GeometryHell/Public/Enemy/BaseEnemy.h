@@ -9,6 +9,7 @@
 class UBehaviorTree;
 class UBaseHealthBarWidget;
 class UTextRenderComponent;
+class UStaticMeshComponent;
 
 UCLASS()
 class GEOMETRYHELL_API ABaseEnemy : public ACharacter
@@ -23,6 +24,9 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		UStaticMeshComponent* CannonCube;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		UBaseHealthBarWidget* BaseHealthBarWidget;
