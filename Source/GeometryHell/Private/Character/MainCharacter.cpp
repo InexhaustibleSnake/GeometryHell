@@ -52,9 +52,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, StaminaComponent, &UStaminaComponent::Sprint);
 	PlayerInputComponent->BindAction("Sprint", IE_Released, StaminaComponent, &UStaminaComponent::StopSprinting);
 
-	DECLARE_DELEGATE_OneParam(FReflectionActivate, bool);
-	PlayerInputComponent->BindAction<FReflectionActivate>("Reflection", IE_Pressed, ReflectionComponent, &UReflectionComponent::Reflection, true);
-	PlayerInputComponent->BindAction<FReflectionActivate>("Reflection", IE_Released, ReflectionComponent, &UReflectionComponent::Reflection, false);
+	PlayerInputComponent->BindAction("Reflection", IE_Pressed, ReflectionComponent, &UReflectionComponent::ReflectionOn);
+	PlayerInputComponent->BindAction("Reflection", IE_Released, ReflectionComponent, &UReflectionComponent::ReflectionOff);
 
 	PlayerInputComponent->BindAction("UltraReflection", IE_Pressed, ReflectionComponent, &UReflectionComponent::UltraReflectionOn);
 	PlayerInputComponent->BindAction("UltraReflection", IE_Released, ReflectionComponent, &UReflectionComponent::UltraReflectionOff);
@@ -77,3 +76,4 @@ void AMainCharacter::MoveRight(float Amount)
 {
 	AddMovementInput(GetActorRightVector(), Amount);
 }
+

@@ -14,7 +14,8 @@ class GEOMETRYHELL_API UReflectionComponent : public UActorComponent
 public:	
 	UReflectionComponent();
 
-	void Reflection(bool Active);
+	void ReflectionOn();
+	void ReflectionOff();
 
 	void UltraReflectionOn();
 	void UltraReflectionOff();
@@ -36,16 +37,25 @@ protected:
 	    float ReflectionPower = 0.5f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Reflection")
-		float ReflectionRestoreRate = 0.1f;
+		float ReflectionStaminaRestoreRate = 0.1f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Reflection")
-		float ReflectionReduceRate = 0.1f;
+		float ReflectionStaminaReduceRate = 0.1f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Reflection")
+		float ReflectionStaminaRestoreAmount = 0.1f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Reflection")
+		float ReflectionStaminaReduceAmount = 0.1f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UltraReflection")
 		float UltraReflectionPower = 0.05f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UltraReflection")
-		float UltraReflectionReduceRate = 0.1f;
+		float UltraReflectionStaminaReduceRate = 0.1f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UltraReflection")
+		float UltraReflectionStaminaReduceAmount = 0.1f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UltraReflection")
 		float PlayerDilationOnUltra = 2.0f;
@@ -58,4 +68,8 @@ protected:
 	bool IsReflectionStaminaFull() const;
 
 	AActor* GetPlayerActor() const;
+
+	bool IsReflectionActive = false;
+	bool IsUltraReflectionActive = false;
+
 };

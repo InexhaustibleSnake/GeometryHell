@@ -19,64 +19,33 @@ void UReflectionComponent::BeginPlay()
 	ReflectionStamina = MaxReflectionStamina;
 }
 
-// When Player toggle Reflection On and Off
-void UReflectionComponent::Reflection(bool Active)
+void UReflectionComponent::ReflectionOn()
 {
-	ACharacter* Owner = Cast<ACharacter>(GetOwner());
-	if (!GetWorld() || !Owner) return;
+	if (IsUltraReflectionActive) return;
 
-	if (Active)
-	{
-		GetWorld()->GetTimerManager().SetTimer(ReflectionTimer, this, &UReflectionComponent::ReduceReflectionStamina, ReflectionReduceRate, true, 0.0f);
-		UGameplayStatics::SetGlobalTimeDilation(GetWorld(), ReflectionPower);
-	}
-	else
-	{
-		GetWorld()->GetTimerManager().SetTimer(ReflectionTimer, this, &UReflectionComponent::RestoreReflectionStamina, ReflectionRestoreRate, true, 0.0f);
-		UGameplayStatics::SetGlobalTimeDilation(GetWorld(), ReflectionPower);
-	}
+	GetWorld()->GetTimerManager().SetTimer(ReflectionTimer, this, &UReflectionComponent::ReduceReflectionStamina, ReflectionStaminaReduceRate, true, 0.0f);
+	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), ReflectionPower);
+	IsReflectionActive = true;
 }
 
-void UReflectionComponent::UltraReflectionOn()
-{
-	const auto PlayerActor = GetPlayerActor();
-	PlayerActor->CustomTimeDilation = PlayerDilationOnUltra;
-	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), UltraReflectionPower);
-}
-
-void UReflectionComponent::UltraReflectionOff()
-{
-	const auto PlayerActor = GetPlayerActor();
-	PlayerActor->CustomTimeDilation = 1.0f;
-	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1.0f);
-}
-
-// Reduce ReflectionStamina and Set Global Time Dilation to Normal, if ReflectionStamina empty
 void UReflectionComponent::ReduceReflectionStamina()
 {
-	if (IsReflectionStaminaEmpty())
+	if (!IsReflectionStaminaEmpty())
 	{
-		GetWorld()->GetTimerManager().ClearTimer(ReflectionTimer);
-		UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1.0f);
-	}
-	else 
-	{
-		ReflectionStamina -= 1;
-	}
-}
-
-void UReflectionComponent::ReduceUltraReflectionStamina()
-{
-	if (IsReflectionStaminaEmpty())
-	{
-		GetWorld()->GetTimerManager().ClearTimer(ReflectionTimer);
-		UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1.0f);
-		
+		ReflectionStamina -= ReflectionStaminaReduceAmount;
 	}
 	else
 	{
-		ReflectionStamina -= 1;
+		UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1.0f);
+		GetWorld()->GetTimerManager().ClearTimer(ReflectionTimer);
 	}
+}
+
+void UReflectionComponent::ReflectionOff()
+{
+	GetWorld()->GetTimerManager().SetTimer(ReflectionTimer, this, &UReflectionComponent::RestoreReflectionStamina, ReflectionStaminaRestoreRate, true, 0.0f);
+	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1.0f);
+	IsReflectionActive = false;
 }
 
 void UReflectionComponent::RestoreReflectionStamina()
@@ -84,12 +53,51 @@ void UReflectionComponent::RestoreReflectionStamina()
 	if (IsReflectionStaminaFull())
 	{
 		GetWorld()->GetTimerManager().ClearTimer(ReflectionTimer);
+		ReflectionStamina = MaxReflectionStamina;
+	}
+	else
+	{
+		ReflectionStamina += 1;
+	}
+}
+
+void UReflectionComponent::UltraReflectionOn()
+{
+	if (IsReflectionActive) return;
+
+	GetWorld()->GetTimerManager().SetTimer(ReflectionTimer, this, &UReflectionComponent::ReduceUltraReflectionStamina, UltraReflectionStaminaReduceRate, true, 0.0f);
+
+	AActor* Player = GetPlayerActor();
+	Player->CustomTimeDilation = PlayerDilationOnUltra;
+
+	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), UltraReflectionPower);
+
+	IsUltraReflectionActive = true;
+}
+
+void UReflectionComponent::ReduceUltraReflectionStamina()
+{
+	if (!IsReflectionStaminaEmpty())
+	{
+		ReflectionStamina -= UltraReflectionStaminaReduceAmount;
 	}
 	else
 	{
 		UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1.0f);
-		ReflectionStamina += 1;
+		GetWorld()->GetTimerManager().ClearTimer(ReflectionTimer);
 	}
+}
+
+void UReflectionComponent::UltraReflectionOff()
+{
+	GetWorld()->GetTimerManager().SetTimer(ReflectionTimer, this, &UReflectionComponent::RestoreReflectionStamina, ReflectionStaminaRestoreRate, true, 0.0f);
+
+	AActor* Player = GetPlayerActor();
+	Player->CustomTimeDilation = 1.0f;
+
+	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1.0f);
+
+	IsUltraReflectionActive = false;
 }
 
 bool UReflectionComponent::IsReflectionStaminaEmpty() const
@@ -99,11 +107,10 @@ bool UReflectionComponent::IsReflectionStaminaEmpty() const
 
 bool UReflectionComponent::IsReflectionStaminaFull() const
 {
-	return FMath::IsNearlyEqual(ReflectionStamina, MaxReflectionStamina);
+	return FMath::IsNearlyEqual(ReflectionStamina, MaxReflectionStamina) || ReflectionStamina >= MaxReflectionStamina;
 }
 
 AActor* UReflectionComponent::GetPlayerActor() const
 {
-	const auto PlayerActor = Cast<AActor>(GetOwner());
-	return PlayerActor;
+	return Cast<AActor>(GetOwner());
 }
