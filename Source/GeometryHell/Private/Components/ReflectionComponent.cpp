@@ -6,6 +6,7 @@
 #include "Character/MainCharacter.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/Actor.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 UReflectionComponent::UReflectionComponent()
 {
@@ -43,6 +44,8 @@ void UReflectionComponent::ReduceReflectionStamina()
 
 void UReflectionComponent::ReflectionOff()
 {
+	if (IsUltraReflectionActive) return;
+
 	GetWorld()->GetTimerManager().SetTimer(ReflectionTimer, this, &UReflectionComponent::RestoreReflectionStamina, ReflectionStaminaRestoreRate, true, 0.0f);
 	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1.0f);
 	IsReflectionActive = false;
@@ -57,17 +60,18 @@ void UReflectionComponent::RestoreReflectionStamina()
 	}
 	else
 	{
-		ReflectionStamina += 1;
+		ReflectionStamina += ReflectionStaminaRestoreAmount;
 	}
 }
 
 void UReflectionComponent::UltraReflectionOn()
 {
-	if (IsReflectionActive) return;
+	auto Player = Cast<AMainCharacter>(GetOwner());
+
+	if (IsReflectionActive || !Player->GetCharacterMovement()->Velocity.IsZero()) return;
 
 	GetWorld()->GetTimerManager().SetTimer(ReflectionTimer, this, &UReflectionComponent::ReduceUltraReflectionStamina, UltraReflectionStaminaReduceRate, true, 0.0f);
 
-	AActor* Player = GetPlayerActor();
 	Player->CustomTimeDilation = PlayerDilationOnUltra;
 
 	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), UltraReflectionPower);
@@ -84,15 +88,19 @@ void UReflectionComponent::ReduceUltraReflectionStamina()
 	else
 	{
 		UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1.0f);
+		auto Player = Cast<AMainCharacter>(GetOwner());
+		Player->CustomTimeDilation = 0.0f;
 		GetWorld()->GetTimerManager().ClearTimer(ReflectionTimer);
 	}
 }
 
 void UReflectionComponent::UltraReflectionOff()
 {
+	if (IsReflectionActive) return;
+
 	GetWorld()->GetTimerManager().SetTimer(ReflectionTimer, this, &UReflectionComponent::RestoreReflectionStamina, ReflectionStaminaRestoreRate, true, 0.0f);
 
-	AActor* Player = GetPlayerActor();
+	auto Player = Cast<AMainCharacter>(GetOwner());
 	Player->CustomTimeDilation = 1.0f;
 
 	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1.0f);
@@ -102,15 +110,10 @@ void UReflectionComponent::UltraReflectionOff()
 
 bool UReflectionComponent::IsReflectionStaminaEmpty() const
 {
-	return FMath::IsNearlyEqual(ReflectionStamina, 0);
+	return FMath::IsNearlyEqual(ReflectionStamina, 0) || ReflectionStamina <= 0;
 }
 
 bool UReflectionComponent::IsReflectionStaminaFull() const
 {
 	return FMath::IsNearlyEqual(ReflectionStamina, MaxReflectionStamina) || ReflectionStamina >= MaxReflectionStamina;
-}
-
-AActor* UReflectionComponent::GetPlayerActor() const
-{
-	return Cast<AActor>(GetOwner());
 }

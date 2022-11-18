@@ -76,4 +76,3 @@ void AMainCharacter::MoveRight(float Amount)
 {
 	AddMovementInput(GetActorRightVector(), Amount);
 }
-

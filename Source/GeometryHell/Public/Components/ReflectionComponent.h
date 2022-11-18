@@ -67,9 +67,6 @@ protected:
 	bool IsReflectionStaminaEmpty() const;
 	bool IsReflectionStaminaFull() const;
 
-	AActor* GetPlayerActor() const;
-
 	bool IsReflectionActive = false;
 	bool IsUltraReflectionActive = false;
-
 };
