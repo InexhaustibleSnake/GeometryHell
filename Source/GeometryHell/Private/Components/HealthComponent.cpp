@@ -20,6 +20,7 @@ void UHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const
 
 	if (Health <= 0) 
 	{
+		OnDeath.Broadcast();
 		GetOwner()->Destroy();
 	}
 }

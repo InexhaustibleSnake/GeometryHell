@@ -7,6 +7,8 @@
 #include "DrawDebugHelpers.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Projectiles/BaseProjectile.h"
+#include "Sound/SoundCue.h"
+#include "Kismet/GameplayStatics.h"
 
 UWeaponComponent::UWeaponComponent()
 {
@@ -44,6 +46,7 @@ void UWeaponComponent::MainShot()
 	ABaseProjectile* BaseProjectile = GetWorld()->SpawnActorDeferred<ABaseProjectile>(MainProjectile, SpawnTransform);
 	if (BaseProjectile)
 	{
+		UGameplayStatics::SpawnSoundAtLocation(GetWorld(), ShootAudio, GetOwner()->GetActorLocation());
 		BaseProjectile->SetShotDirection(Direction);
 		BaseProjectile->SetOwner(GetOwner());
 		BaseProjectile->FinishSpawning(SpawnTransform);

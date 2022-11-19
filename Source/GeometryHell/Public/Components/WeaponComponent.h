@@ -7,6 +7,7 @@
 #include "WeaponComponent.generated.h"
 
 class ABaseProjectile;
+class USoundCue;
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class GEOMETRYHELL_API UWeaponComponent : public UActorComponent
@@ -28,6 +29,9 @@ protected:
 		float MainShootRate = 0.3f;
 
 	FTimerHandle ShootTimer;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Audio")
+		USoundCue* ShootAudio;
 
 private:
 	void MainShot();
