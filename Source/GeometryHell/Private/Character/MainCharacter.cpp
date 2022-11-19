@@ -7,6 +7,7 @@
 #include "Components/ReflectionComponent.h"
 #include "Components/StaminaComponent.h"
 #include "Components/WeaponComponent.h"
+#include "Components/HealthComponent.h"
 
 AMainCharacter::AMainCharacter()
 {
@@ -27,6 +28,7 @@ AMainCharacter::AMainCharacter()
 	ReflectionComponent = CreateDefaultSubobject<UReflectionComponent>("ReflectionComponent");
 	StaminaComponent = CreateDefaultSubobject<UStaminaComponent>("StaminaComponent");
 	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>("WeaponComponent");
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
 
 	GetCharacterMovement()->MaxWalkSpeed = 800.0f;
 	GetCharacterMovement()->JumpZVelocity = 550.0f;

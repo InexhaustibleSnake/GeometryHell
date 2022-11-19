@@ -6,10 +6,10 @@
 #include "Components/StaticMeshComponent.h"
 #include "Projectiles/BaseProjectile.h"
 #include "Components/SceneComponent.h"
-#include "Enemy/AI/Services/FindEnemyService.h"
 #include "Enemy/Components/BaseAIPerceptionComponent.h"
-#include "BehaviorTree/BlackboardComponent.h"
 #include "AIController.h"
+#include "Sound/SoundCue.h"
+#include "Kismet/GameplayStatics.h"
 
 ABaseEnemy::ABaseEnemy()
 {
@@ -53,6 +53,7 @@ void ABaseEnemy::StartFire()
 
 	if (Projectile)
 	{
+		UGameplayStatics::SpawnSoundAtLocation(GetWorld(), ShootAudio, GetActorLocation());
 		Projectile->SetShotDirection(ShootPoint->GetForwardVector());
 		Projectile->SetOwner(GetOwner());
 		Projectile->FinishSpawning(SpawnTransform);

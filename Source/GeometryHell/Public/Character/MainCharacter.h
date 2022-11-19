@@ -11,6 +11,7 @@ class USkeletalMeshComponent;
 class UReflectionComponent;
 class UStaminaComponent;
 class UWeaponComponent;
+class UHealthComponent;
 
 UCLASS()
 class GEOMETRYHELL_API AMainCharacter : public ACharacter
@@ -38,6 +39,8 @@ protected:
 		UStaminaComponent* StaminaComponent;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		UWeaponComponent* WeaponComponent;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		UHealthComponent* HealthComponent;
 
 private:
 	void MoveForward(float Amount);

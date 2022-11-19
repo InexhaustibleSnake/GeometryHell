@@ -12,6 +12,7 @@ class UTextRenderComponent;
 class UStaticMeshComponent;
 class USceneComponent;
 class ABaseProjectile;
+class USoundCue;
 
 UCLASS()
 class GEOMETRYHELL_API ABaseEnemy : public ACharacter
@@ -53,6 +54,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		TSubclassOf<ABaseProjectile> MainProjectile;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		USoundCue* ShootAudio;
 
    UFUNCTION()
 	  void OnTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
