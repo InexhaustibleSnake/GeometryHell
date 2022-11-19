@@ -3,9 +3,10 @@
 #include "Enemy/AI/BaseAIController.h"
 #include "Enemy/Components/BaseAIPerceptionComponent.h"
 #include "Enemy/BaseEnemy.h"
-#include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Character/MainCharacter.h"
+#include "Perception/AISense_Sight.h"
+#include "Perception/AISense_Damage.h"
 
 ABaseAIController::ABaseAIController()
 {
@@ -23,16 +24,44 @@ void ABaseAIController::OnPossess(APawn* InPawn)
     }
 }
 
+void ABaseAIController::BeginPlay()
+{
+    Super::BeginPlay();
+
+    GetPerceptionComponent()->OnPerceptionUpdated.AddDynamic(this, &ABaseAIController::ActorsUpdated);
+
+    const auto EnemyOwner = Cast<ABaseEnemy>(GetPawn());
+    EnemyOwner->OnTakeAnyDamage.AddDynamic(this, &ABaseAIController::OnTakeDamage);
+}
+
 void ABaseAIController::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    //const auto PlayerActor = GetFocusActor();
+
+    if (!SpotPlayer) return;
     const auto PlayerCharacter = Cast<AMainCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
     SetFocus(PlayerCharacter);
 }
 
-AActor* ABaseAIController::GetFocusOnPlayer()
+void ABaseAIController::ActorsUpdated(TArray<AActor*> const& UpdatedActors)
 {
-    if (!GetBlackboardComponent()) return nullptr;
-    return Cast<AActor>(GetBlackboardComponent()->GetValueAsObject(FocusOnKeyName));
+    const auto PlayerCharacter = Cast<AMainCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+    for (auto PerceivedActor : UpdatedActors)
+    {
+        if (PerceivedActor == PlayerCharacter)
+        {
+            SpotPlayer = true;
+            const auto EnemyOwner = Cast<ABaseEnemy>(GetPawn());
+            EnemyOwner->HasEnemy = true;
+        }
+    }
+}
+
+void ABaseAIController::OnTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
+{
+    if (SpotPlayer) return;
+    SpotPlayer = true;
+    const auto EnemyOwner = Cast<ABaseEnemy>(GetPawn());
+    EnemyOwner->HasEnemy = true;
 }

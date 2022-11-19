@@ -30,7 +30,8 @@ void ABaseProjectile::BeginPlay()
 
 void ABaseProjectile::OnCollision(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit)
 {
-	OtherActor->TakeDamage(Damage, FDamageEvent{}, GetOwner()->GetInstigatorController(), GetOwner());
+	if (OtherActor == GetOwner()) return;
+	OtherActor->TakeDamage(Damage, FDamageEvent{}, nullptr, this);
 	Destroy();
 }
 

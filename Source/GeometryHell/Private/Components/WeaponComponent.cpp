@@ -11,15 +11,12 @@
 UWeaponComponent::UWeaponComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-
 }
 
 
 void UWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	
 }
 
 void UWeaponComponent::StartFire()

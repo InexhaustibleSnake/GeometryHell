@@ -10,6 +10,8 @@ class UBehaviorTree;
 class UBaseHealthBarWidget;
 class UTextRenderComponent;
 class UStaticMeshComponent;
+class USceneComponent;
+class ABaseProjectile;
 
 UCLASS()
 class GEOMETRYHELL_API ABaseEnemy : public ACharacter
@@ -22,8 +24,17 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
 		UBehaviorTree* BehaviorTreeAsset;
 
+	void StartFire();
+
+	FTimerHandle FireTimer;
+
+	bool HasEnemy = false;
+
 protected:
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		USceneComponent* ShootPoint;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		UStaticMeshComponent* CannonCube;
@@ -37,6 +48,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Properities")
 		float Health = 100.0f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Properities")
+		float FireRate = 1.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		TSubclassOf<ABaseProjectile> MainProjectile;
+
    UFUNCTION()
 	  void OnTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+
 };

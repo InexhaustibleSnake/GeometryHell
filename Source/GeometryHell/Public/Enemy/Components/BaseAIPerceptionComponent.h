@@ -14,5 +14,5 @@ class GEOMETRYHELL_API UBaseAIPerceptionComponent : public UAIPerceptionComponen
 	GENERATED_BODY()
 	
 public:
-	AActor* GetPlayer() const;
+
 };

@@ -18,6 +18,7 @@ public:
 
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
+	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
@@ -26,7 +27,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
 		FName FocusOnKeyName = "PlayerActor";
 
-private:
-	AActor* GetFocusOnPlayer();
+	UFUNCTION()
+	void ActorsUpdated(TArray<AActor*> const & UpdatedActors);
 
+	UFUNCTION()
+	void OnTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+
+	bool SpotPlayer = false;
 };

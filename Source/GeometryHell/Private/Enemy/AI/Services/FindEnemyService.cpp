@@ -14,7 +14,7 @@ UFindEnemyService::UFindEnemyService()
 
 void UFindEnemyService::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
-	const auto Blackboard = OwnerComp.GetBlackboardComponent();
+	/*const auto Blackboard = OwnerComp.GetBlackboardComponent();
 	if (Blackboard)
 	{
 		const auto OwnerEnemyController = OwnerComp.GetAIOwner();
@@ -25,5 +25,5 @@ void UFindEnemyService::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 			Blackboard->SetValueAsObject(EnemyActorKey.SelectedKeyName, PerceptionComponent->GetPlayer());
 		}
 	}
-	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
+	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);*/
 }
