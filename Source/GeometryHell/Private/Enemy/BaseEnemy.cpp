@@ -39,7 +39,7 @@ void ABaseEnemy::OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageT
 {
 	Health -= Damage;
 	HealthTextRender->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
-	if (Health == 0) Destroy();
+	if (Health <= 0) Destroy();
 }
 
 void ABaseEnemy::StartFire()

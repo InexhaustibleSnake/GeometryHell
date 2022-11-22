@@ -16,7 +16,6 @@ UReflectionComponent::UReflectionComponent()
 void UReflectionComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
 	ReflectionStamina = MaxReflectionStamina;
 }
 
@@ -77,6 +76,7 @@ void UReflectionComponent::UltraReflectionOn()
 	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), UltraReflectionPower);
 
 	IsUltraReflectionActive = true;
+
 }
 
 void UReflectionComponent::ReduceUltraReflectionStamina()

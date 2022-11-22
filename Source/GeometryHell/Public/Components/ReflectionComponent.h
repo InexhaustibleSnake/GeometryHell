@@ -28,7 +28,7 @@ protected:
 	FTimerHandle UltraReflectionTimer;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Reflection")
-	    float ReflectionStamina;
+		float ReflectionStamina;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Reflection")
 	    float MaxReflectionStamina = 100.0f;

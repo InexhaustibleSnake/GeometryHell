@@ -19,6 +19,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void SetShotDirection(const FVector& Direction) { ShotDirection = Direction; }
+	void SetDamage(float NewDamage) { Damage = NewDamage; }
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Properities")
+		float Damage = 10.0f;
 
 protected:
 	virtual void BeginPlay() override;
@@ -31,9 +35,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Properities")
 		float LifeSpan = 5.0f;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Properities")
-		float Damage = 10.0f;
 
 	FVector ShotDirection;
     

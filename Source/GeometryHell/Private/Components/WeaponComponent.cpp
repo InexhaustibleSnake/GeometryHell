@@ -9,6 +9,8 @@
 #include "Projectiles/BaseProjectile.h"
 #include "Sound/SoundCue.h"
 #include "Kismet/GameplayStatics.h"
+#include "Projectiles/BaseProjectile.h"
+#include "Components/ReflectionComponent.h"
 
 UWeaponComponent::UWeaponComponent()
 {
@@ -47,6 +49,13 @@ void UWeaponComponent::MainShot()
 	if (BaseProjectile)
 	{
 		UGameplayStatics::SpawnSoundAtLocation(GetWorld(), ShootAudio, GetOwner()->GetActorLocation());
+
+		const auto MainCharacter = Cast<AMainCharacter>(GetOwner());
+		if (MainCharacter->CustomTimeDilation > 1) 
+		{
+			BaseProjectile->SetDamage(BaseProjectile->Damage * 1.5);
+		}
+
 		BaseProjectile->SetShotDirection(Direction);
 		BaseProjectile->SetOwner(GetOwner());
 		BaseProjectile->FinishSpawning(SpawnTransform);
