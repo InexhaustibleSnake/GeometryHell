@@ -34,4 +34,6 @@ protected:
 	void OnTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
 	bool SpotPlayer = false;
+
+	void AddEnemiesInFight();
 };

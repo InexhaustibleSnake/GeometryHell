@@ -7,6 +7,7 @@
 #include "Character/MainCharacter.h"
 #include "Perception/AISense_Sight.h"
 #include "Perception/AISense_Damage.h"
+#include "Logic/BaseGameMode.h"
 
 ABaseAIController::ABaseAIController()
 {
@@ -51,6 +52,12 @@ void ABaseAIController::ActorsUpdated(TArray<AActor*> const& UpdatedActors)
     {
         if (PerceivedActor == PlayerCharacter)
         {
+
+            if (!SpotPlayer) 
+            {
+                AddEnemiesInFight();
+            }
+
             SpotPlayer = true;
             const auto EnemyOwner = Cast<ABaseEnemy>(GetPawn());
             EnemyOwner->HasEnemy = true;
@@ -61,7 +68,16 @@ void ABaseAIController::ActorsUpdated(TArray<AActor*> const& UpdatedActors)
 void ABaseAIController::OnTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
 {
     if (SpotPlayer) return;
+    AddEnemiesInFight();
     SpotPlayer = true;
+
     const auto EnemyOwner = Cast<ABaseEnemy>(GetPawn());
     EnemyOwner->HasEnemy = true;
+}
+
+void ABaseAIController::AddEnemiesInFight()
+{
+    auto GameMode = Cast<ABaseGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+    if (!GameMode && SpotPlayer) return;
+    GameMode->UpdateEnemyInFight(1);
 }

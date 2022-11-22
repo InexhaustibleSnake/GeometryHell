@@ -6,12 +6,21 @@
 #include "GameFramework/GameModeBase.h"
 #include "BaseGameMode.generated.h"
 
-/**
- * 
- */
+
+
 UCLASS()
 class GEOMETRYHELL_API ABaseGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+
+	UFUNCTION(BlueprintCallable)
+		int UpdateEnemyInFight(int Amount);
+	UFUNCTION(BlueprintCallable)
+		int GetEnemiesInFight() const;
+
+protected:
+
+	int EnemyInFightAmount = 0;
 };

@@ -10,6 +10,7 @@
 #include "AIController.h"
 #include "Sound/SoundCue.h"
 #include "Kismet/GameplayStatics.h"
+#include "Logic/BaseGameMode.h"
 
 ABaseEnemy::ABaseEnemy()
 {
@@ -39,7 +40,14 @@ void ABaseEnemy::OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageT
 {
 	Health -= Damage;
 	HealthTextRender->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
-	if (Health <= 0) Destroy();
+	if (Health <= 0)
+	{
+		auto GameMode = Cast<ABaseGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+
+		GameMode->UpdateEnemyInFight(-1);
+
+		Destroy();
+	}
 }
 
 void ABaseEnemy::StartFire()
