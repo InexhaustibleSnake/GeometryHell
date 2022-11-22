@@ -47,4 +47,5 @@ private:
 	void MoveRight(float Amount);
 
 	FTimerHandle DelayTimer;
+
 };

@@ -2,6 +2,9 @@
 
 #include "Components/HealthComponent.h"
 #include "Character/MainCharacter.h"
+#include "GameFramework/Pawn.h"
+#include "GameFramework/Controller.h"
+#include "Camera/CameraShakeBase.h"
 
 UHealthComponent::UHealthComponent()
 {
@@ -12,6 +15,7 @@ void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::OnTakeAnyDamage);
+	Health = MaxHealth;
 }
 
 void UHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
@@ -23,4 +27,22 @@ void UHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const
 		OnDeath.Broadcast();
 		GetOwner()->Destroy();
 	}
+
+	PlayCameraShake();
+}
+
+void UHealthComponent::PlayCameraShake()
+{
+	const auto Player = Cast<APawn>(GetOwner());
+	if (!Player) return;
+
+	const auto Controller = Cast<APlayerController>(Player->GetController());
+	if (!Controller || !Controller->PlayerCameraManager) return;
+
+	Controller->PlayerCameraManager->StartCameraShake(CameraShake);
+}
+
+float UHealthComponent::GetHealthPercentage() const
+{
+	return Health / MaxHealth;
 }
