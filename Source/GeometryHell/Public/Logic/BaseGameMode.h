@@ -6,7 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "BaseGameMode.generated.h"
 
-
+class USoundCue;
+class USoundBase;
 
 UCLASS()
 class GEOMETRYHELL_API ABaseGameMode : public AGameModeBase
@@ -15,10 +16,21 @@ class GEOMETRYHELL_API ABaseGameMode : public AGameModeBase
 	
 public:
 
+	virtual void BeginPlay() override;
+
+	ABaseGameMode();
+
 	UFUNCTION(BlueprintCallable)
 		int UpdateEnemyInFight(int Amount);
 	UFUNCTION(BlueprintCallable)
 		int GetEnemiesInFight() const;
+
+	void PlayFightOst();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Audio")
+		USoundCue* FightOst;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Audio")
+		UAudioComponent* AudioComponent;
 
 protected:
 
