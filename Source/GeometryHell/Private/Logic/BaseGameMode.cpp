@@ -36,14 +36,13 @@ void ABaseGameMode::PlayFightOst()
 	if (EnemyInFightAmount == 1 && !AudioComponent->IsPlaying())
 	{
 		AudioComponent->Play(0.0f);
-		if (GEngine)
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Some debug message!"));
 	}
 	else if (EnemyInFightAmount == 0)
 	{
 		AudioComponent->FadeOut(6.0f, 0.01f, EAudioFaderCurve::Linear);
-		
-		if (GEngine)
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Some debug message!"));
+	}
+	else if (AudioComponent->bIsFadingOut)
+	{
+		AudioComponent->FadeIn(2.0f, 0.3f);
 	}
 }
