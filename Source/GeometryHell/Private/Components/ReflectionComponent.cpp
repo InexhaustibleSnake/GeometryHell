@@ -72,11 +72,9 @@ void UReflectionComponent::UltraReflectionOn()
 	GetWorld()->GetTimerManager().SetTimer(ReflectionTimer, this, &UReflectionComponent::ReduceUltraReflectionStamina, UltraReflectionStaminaReduceRate, true, 0.0f);
 
 	Player->CustomTimeDilation = PlayerDilationOnUltra;
-
 	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), UltraReflectionPower);
 
 	IsUltraReflectionActive = true;
-
 }
 
 void UReflectionComponent::ReduceUltraReflectionStamina()

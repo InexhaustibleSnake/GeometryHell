@@ -21,11 +21,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	float GetHealthPercentage() const;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Health")
-		float Health = MaxHealth;
+	bool TryToAddHealth(float Amount);
+	bool IsHealthFull() const;
 
 protected:
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Health")
+		float Health;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Health")
 		float MaxHealth = 100.0f;
@@ -41,5 +44,6 @@ protected:
 
 private:
 	void PlayCameraShake();
+	void SetHealth(float Amount);
 
 };

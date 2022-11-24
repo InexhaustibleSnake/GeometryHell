@@ -46,3 +46,23 @@ float UHealthComponent::GetHealthPercentage() const
 {
 	return Health / MaxHealth;
 }
+
+bool UHealthComponent::TryToAddHealth(float Amount)
+{
+	if (IsHealthFull()) return false;
+	
+	SetHealth(Health + Amount);
+	return true;
+}
+
+bool UHealthComponent::IsHealthFull() const
+{
+	return FMath::IsNearlyEqual(Health, MaxHealth);
+}
+
+void UHealthComponent::SetHealth(float Amount)
+{
+	const auto NewHealth = FMath::Clamp(Amount, 0.0f, MaxHealth);
+
+	Health = NewHealth;
+}
