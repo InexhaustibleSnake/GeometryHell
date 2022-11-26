@@ -46,8 +46,12 @@ void ABaseEnemy::OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageT
 
 		GameMode->UpdateEnemyInFight(-1);
 
+		UGameplayStatics::SpawnSoundAtLocation(GetWorld(), DeathSound, GetOwner()->GetActorLocation());
 		Destroy();
+		return;
 	}
+
+	UGameplayStatics::SpawnSoundAtLocation(GetWorld(), DamagedSound, GetOwner()->GetActorLocation());
 }
 
 void ABaseEnemy::StartFire()

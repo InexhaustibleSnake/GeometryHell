@@ -29,8 +29,13 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Audio")
 		USoundCue* FightOst;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+		USoundCue* GameOverOst;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Audio")
 		UAudioComponent* AudioComponent;
+
+	UFUNCTION()
+	void OnPlayerDeath();
 
 protected:
 

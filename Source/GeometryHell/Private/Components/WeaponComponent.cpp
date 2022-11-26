@@ -2,7 +2,6 @@
 
 #include "Components/WeaponComponent.h"
 #include "Character/MainCharacter.h"
-#include "GameFramework/Character.h"
 #include "GameFramework/Controller.h"
 #include "DrawDebugHelpers.h"
 #include "GameFramework/ProjectileMovementComponent.h"

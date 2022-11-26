@@ -6,6 +6,8 @@
 #include "Sound/SoundBase.h"
 #include "Components/AudioComponent.h"
 #include "Engine/Engine.h"
+#include "Character/MainCharacter.h"
+#include "Components/HealthComponent.h"
 
 ABaseGameMode::ABaseGameMode()
 {
@@ -16,6 +18,11 @@ void ABaseGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 	AudioComponent->SetSound(FightOst);
+	
+	const auto PlayerCharacter = Cast<AMainCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	const auto HealthComponent = PlayerCharacter->FindComponentByClass<UHealthComponent>();
+
+	HealthComponent->OnDeath.AddDynamic(this, &ABaseGameMode::OnPlayerDeath);
 }
 
 int ABaseGameMode::UpdateEnemyInFight(int Amount)
@@ -45,4 +52,9 @@ void ABaseGameMode::PlayFightOst()
 	{
 		AudioComponent->FadeIn(2.0f, 0.3f);
 	}
+}
+
+void ABaseGameMode::OnPlayerDeath()
+{
+	UGameplayStatics::PlaySound2D(GetWorld(), GameOverOst);
 }

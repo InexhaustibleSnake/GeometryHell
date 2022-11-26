@@ -7,6 +7,7 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Sound/SoundWave.h"
 
 UReflectionComponent::UReflectionComponent()
 {
@@ -71,9 +72,11 @@ void UReflectionComponent::UltraReflectionOn()
 
 	GetWorld()->GetTimerManager().SetTimer(ReflectionTimer, this, &UReflectionComponent::ReduceUltraReflectionStamina, UltraReflectionStaminaReduceRate, true, 0.0f);
 
+
 	Player->CustomTimeDilation = PlayerDilationOnUltra;
 	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), UltraReflectionPower);
 
+	UGameplayStatics::PlaySound2D(GetWorld(), TimeStopSound);
 	IsUltraReflectionActive = true;
 }
 
@@ -86,6 +89,7 @@ void UReflectionComponent::ReduceUltraReflectionStamina()
 	else
 	{
 		UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1.0f);
+
 		auto Player = Cast<AMainCharacter>(GetOwner());
 		Player->CustomTimeDilation = 0.0f;
 		GetWorld()->GetTimerManager().ClearTimer(ReflectionTimer);
@@ -102,6 +106,11 @@ void UReflectionComponent::UltraReflectionOff()
 	Player->CustomTimeDilation = 1.0f;
 
 	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1.0f);
+
+	if (IsUltraReflectionActive)
+	{
+		UGameplayStatics::PlaySound2D(GetWorld(), TimeResumeSound);
+	}
 
 	IsUltraReflectionActive = false;
 }

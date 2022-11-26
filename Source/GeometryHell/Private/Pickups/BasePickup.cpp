@@ -24,11 +24,13 @@ ABasePickup::ABasePickup()
 void ABasePickup::BeginPlay()
 {
 	Super::BeginPlay();
+	GenerateRotationYaw();
 }
 
 void ABasePickup::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	AddActorLocalRotation(FRotator(0.0f, RotationYaw, 0.0f));
 }
 
 void ABasePickup::NotifyActorBeginOverlap(AActor* OtherActor)
@@ -36,7 +38,6 @@ void ABasePickup::NotifyActorBeginOverlap(AActor* OtherActor)
 	Super::NotifyActorBeginOverlap(OtherActor);
 
 	const auto Player = Cast<AMainCharacter>(OtherActor);
-
 
 	if (GivePickupTo(Player))
 	{
@@ -54,7 +55,8 @@ void ABasePickup::PickupWasTaken()
 	GetRootComponent()->SetHiddenInGame(true, true);
 	CollisionComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
 	
-
+	UGameplayStatics::SpawnSoundAtLocation(GetWorld(), PickupTakenSound, GetActorLocation());
+	
 	GetWorldTimerManager().SetTimer(PickupTimer, this, &ABasePickup::Respawn, RespawnTime);
 }
 
@@ -64,3 +66,8 @@ void ABasePickup::Respawn()
 	GetRootComponent()->SetHiddenInGame(false, true);
 }
 
+void ABasePickup::GenerateRotationYaw()
+{
+	const auto Direction = FMath::RandBool() ? 1.0f : -1.0f;
+	RotationYaw = FMath::RandRange(1.0f, 2.0f) * Direction;
+}

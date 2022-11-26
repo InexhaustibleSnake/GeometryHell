@@ -33,6 +33,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Audio")
 		USoundCue* ShootAudio;
 
+
 private:
 	void MainShot();
 	void MakeTrace(FHitResult& HitResult, const FVector TraceStart, const FVector TraceEnd);

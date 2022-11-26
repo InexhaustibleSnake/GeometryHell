@@ -9,6 +9,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
 
 class UCameraShakeBase;
+class USoundCue;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class GEOMETRYHELL_API UHealthComponent : public UActorComponent
@@ -24,6 +25,9 @@ public:
 	bool TryToAddHealth(float Amount);
 	bool IsHealthFull() const;
 
+	UPROPERTY(BlueprintAssignable)
+		FOnDeath OnDeath;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -36,11 +40,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
 		TSubclassOf<UCameraShakeBase> CameraShake;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+		USoundCue* HittedSound;
+
 	UFUNCTION()
 		void OnTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
-
-	UPROPERTY(BlueprintAssignable)
-	FOnDeath OnDeath;
 
 private:
 	void PlayCameraShake();

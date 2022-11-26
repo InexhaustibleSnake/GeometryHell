@@ -15,7 +15,7 @@ class GEOMETRYHELL_API AHealthPickup : public ABasePickup
 
 protected:
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Pickup")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
 		float HealAmount = 30.0f;
 
 private:

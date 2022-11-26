@@ -58,7 +58,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Audio")
 		USoundCue* ShootAudio;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Audio")
+		USoundCue* DamagedSound;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Audio")
+		USoundCue* DeathSound;
+
    UFUNCTION()
 	  void OnTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+
 
 };

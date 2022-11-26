@@ -42,10 +42,9 @@ private:
 	virtual bool GivePickupTo(AMainCharacter* PlayerCharacter);
 	void PickupWasTaken();
 	void Respawn();
+	void GenerateRotationYaw();
 
 	FTimerHandle PickupTimer;
 	float RotationYaw;
-
-
 };
 

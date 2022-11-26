@@ -5,6 +5,8 @@
 #include "GameFramework/Pawn.h"
 #include "GameFramework/Controller.h"
 #include "Camera/CameraShakeBase.h"
+#include "Sound/SoundCue.h"
+#include "Kismet/GameplayStatics.h"
 
 UHealthComponent::UHealthComponent()
 {
@@ -26,8 +28,10 @@ void UHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const
 	{
 		OnDeath.Broadcast();
 		GetOwner()->Destroy();
+		return;
 	}
 
+	UGameplayStatics::SpawnSoundAtLocation(GetWorld(), HittedSound, GetOwner()->GetActorLocation());
 	PlayCameraShake();
 }
 

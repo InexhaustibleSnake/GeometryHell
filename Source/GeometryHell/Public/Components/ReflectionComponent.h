@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "ReflectionComponent.generated.h"
 
+class USoundWave;
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class GEOMETRYHELL_API UReflectionComponent : public UActorComponent
 {
@@ -60,6 +62,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UltraReflection")
 		float PlayerDilationOnUltra = 2.0f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+		USoundWave* TimeStopSound;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+		USoundWave* TimeResumeSound;
+
 	void ReduceReflectionStamina();
 	void ReduceUltraReflectionStamina();
 	void RestoreReflectionStamina();
@@ -68,5 +76,7 @@ protected:
 	bool IsReflectionStaminaFull() const;
 
 	bool IsReflectionActive = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UltraReflection")
 	bool IsUltraReflectionActive = false;
 };
