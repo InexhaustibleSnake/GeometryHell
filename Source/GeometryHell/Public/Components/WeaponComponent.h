@@ -19,6 +19,8 @@ public:
 	void StartFire();
 	void StopFire();
 
+	void SpecialShot();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -26,18 +28,34 @@ protected:
 		TSubclassOf<ABaseProjectile> MainProjectile;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Projectile")
+		TSubclassOf<ABaseProjectile> SpecialProjectile;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Projectile")
 		float MainShootRate = 0.3f;
 
-	FTimerHandle ShootTimer;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SpecialShot")
+		float SpecialRestoreRate = 10.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SpecialShot")
+		float MaxSpecialShots = 4.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SpecialShot")
+		float NumOfSpecialShots;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Audio")
 		USoundCue* ShootAudio;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Audio")
+		USoundCue* SpecialShotAudio;
+
+	FTimerHandle ShootTimer;
+	FTimerHandle SpecialShotTimer;
 
 private:
 	void MainShot();
 	void MakeTrace(FHitResult& HitResult, const FVector TraceStart, const FVector TraceEnd);
 	void GetPlayerViewPoint(FVector& TraceStart, FVector& TraceEnd);
+	void SpecialShotRestore();
 
 	FVector GetMuzzleWorldLocation();
 };

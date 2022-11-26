@@ -16,10 +16,10 @@ UWeaponComponent::UWeaponComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-
 void UWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	NumOfSpecialShots = MaxSpecialShots;
 }
 
 void UWeaponComponent::StartFire()
@@ -58,6 +58,54 @@ void UWeaponComponent::MainShot()
 		BaseProjectile->SetShotDirection(Direction);
 		BaseProjectile->SetOwner(GetOwner());
 		BaseProjectile->FinishSpawning(SpawnTransform);
+	}
+}
+
+void UWeaponComponent::SpecialShot()
+{
+	if (NumOfSpecialShots == 0) return;
+	FVector TraceStart, TraceEnd;
+
+	GetPlayerViewPoint(TraceStart, TraceEnd);
+
+	FHitResult HitResult;
+	MakeTrace(HitResult, TraceStart, TraceEnd);
+
+	const FVector EndPoint = HitResult.bBlockingHit ? HitResult.ImpactPoint : TraceEnd;
+	const FVector Direction = (EndPoint - GetMuzzleWorldLocation()).GetSafeNormal();
+	const FTransform SpawnTransform(FRotator::ZeroRotator, GetMuzzleWorldLocation());
+	ABaseProjectile* SpecialShot = GetWorld()->SpawnActorDeferred<ABaseProjectile>(SpecialProjectile, SpawnTransform);
+	if (SpecialShot)
+	{
+		UGameplayStatics::SpawnSoundAtLocation(GetWorld(), SpecialShotAudio, GetOwner()->GetActorLocation());
+		NumOfSpecialShots -= 1;
+
+		const auto MainCharacter = Cast<AMainCharacter>(GetOwner());
+		if (MainCharacter->CustomTimeDilation > 1)
+		{
+			SpecialShot->SetDamage(SpecialShot->Damage * 1.5);
+		}
+
+		SpecialShot->SetShotDirection(Direction);
+		SpecialShot->SetOwner(GetOwner());
+		SpecialShot->FinishSpawning(SpawnTransform);
+
+		if (!GetWorld()->GetTimerManager().IsTimerActive(SpecialShotTimer))
+		{
+			GetWorld()->GetTimerManager().SetTimer(SpecialShotTimer, this, &UWeaponComponent::SpecialShotRestore, 1.0f, true, SpecialRestoreRate);
+		}
+	}
+}
+
+void UWeaponComponent::SpecialShotRestore()
+{
+	if (NumOfSpecialShots != MaxSpecialShots)
+	{
+		NumOfSpecialShots += 1;
+	}
+	else
+	{
+		GetWorld()->GetTimerManager().ClearTimer(SpecialShotTimer);
 	}
 }
 

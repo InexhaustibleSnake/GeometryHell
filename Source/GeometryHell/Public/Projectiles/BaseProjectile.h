@@ -17,6 +17,7 @@ class GEOMETRYHELL_API ABaseProjectile : public AActor
 public:	
 	ABaseProjectile();
 	virtual void Tick(float DeltaTime) override;
+	virtual void BeginPlay() override;
 
 	void SetShotDirection(const FVector& Direction) { ShotDirection = Direction; }
 	void SetDamage(float NewDamage) { Damage = NewDamage; }
@@ -25,7 +26,6 @@ public:
 		float Damage = 10.0f;
 
 protected:
-	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		UProjectileMovementComponent* ProjectileMovementComponent;
@@ -39,5 +39,5 @@ protected:
 	FVector ShotDirection;
     
 	UFUNCTION()
-		void OnCollision(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit);
+		virtual void OnCollision(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit);
 };

@@ -60,6 +60,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 	PlayerInputComponent->BindAction("ShootMainProjectile", IE_Pressed, WeaponComponent, &UWeaponComponent::StartFire);
 	PlayerInputComponent->BindAction("ShootMainProjectile", IE_Released, WeaponComponent, &UWeaponComponent::StopFire);
+	PlayerInputComponent->BindAction("ShootSpecialProjectile", IE_Pressed, WeaponComponent, &UWeaponComponent::SpecialShot);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &AMainCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AMainCharacter::MoveRight);
