@@ -92,7 +92,7 @@ void UWeaponComponent::SpecialShot()
 
 		if (!GetWorld()->GetTimerManager().IsTimerActive(SpecialShotTimer))
 		{
-			GetWorld()->GetTimerManager().SetTimer(SpecialShotTimer, this, &UWeaponComponent::SpecialShotRestore, 1.0f, true, SpecialRestoreRate);
+			GetWorld()->GetTimerManager().SetTimer(SpecialShotTimer, this, &UWeaponComponent::SpecialShotRestore, SpecialRestoreRate, true, 1.0f);
 		}
 	}
 }
