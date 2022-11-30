@@ -15,7 +15,6 @@ class GEOMETRYHELL_API ABaseGameMode : public AGameModeBase
 	GENERATED_BODY()
 	
 public:
-
 	virtual void BeginPlay() override;
 
 	ABaseGameMode();

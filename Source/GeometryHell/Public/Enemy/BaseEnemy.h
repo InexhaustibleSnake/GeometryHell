@@ -7,7 +7,6 @@
 #include "BaseEnemy.generated.h"
 
 class UBehaviorTree;
-class UBaseHealthBarWidget;
 class UTextRenderComponent;
 class UStaticMeshComponent;
 class USceneComponent;
@@ -27,7 +26,6 @@ public:
 
 	void StartFire();
 
-	FTimerHandle FireTimer;
 
 	bool HasEnemy = false;
 
@@ -39,9 +37,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		UStaticMeshComponent* CannonCube;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
-		UBaseHealthBarWidget* BaseHealthBarWidget;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		UTextRenderComponent* HealthTextRender;
@@ -64,8 +59,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Audio")
 		USoundCue* DeathSound;
 
+	FTimerHandle FireTimer;
+
    UFUNCTION()
 	  void OnTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
-
+private:
+	void UpdateControllerInfo();
 };

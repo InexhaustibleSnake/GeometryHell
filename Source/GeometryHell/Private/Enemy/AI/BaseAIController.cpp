@@ -29,10 +29,8 @@ void ABaseAIController::BeginPlay()
 {
     Super::BeginPlay();
 
-    GetPerceptionComponent()->OnPerceptionUpdated.AddDynamic(this, &ABaseAIController::ActorsUpdated);
+   GetPerceptionComponent()->OnPerceptionUpdated.AddDynamic(this, &ABaseAIController::ActorsUpdated);
 
-    const auto EnemyOwner = Cast<ABaseEnemy>(GetPawn());
-    EnemyOwner->OnTakeAnyDamage.AddDynamic(this, &ABaseAIController::OnTakeDamage);
 }
 
 void ABaseAIController::Tick(float DeltaTime)
@@ -65,7 +63,7 @@ void ABaseAIController::ActorsUpdated(TArray<AActor*> const& UpdatedActors)
     }
 }
 
-void ABaseAIController::OnTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
+void ABaseAIController::OnOwnerDamaged()
 {
     if (SpotPlayer) return;
     AddEnemiesInFight();

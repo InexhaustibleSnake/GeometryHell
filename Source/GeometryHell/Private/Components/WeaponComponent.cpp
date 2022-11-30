@@ -56,7 +56,6 @@ void UWeaponComponent::MainShot()
 		}
 
 		BaseProjectile->SetShotDirection(Direction);
-		BaseProjectile->SetOwner(GetOwner());
 		BaseProjectile->FinishSpawning(SpawnTransform);
 	}
 }
@@ -87,7 +86,6 @@ void UWeaponComponent::SpecialShot()
 		}
 
 		SpecialShot->SetShotDirection(Direction);
-		SpecialShot->SetOwner(GetOwner());
 		SpecialShot->FinishSpawning(SpawnTransform);
 
 		if (!GetWorld()->GetTimerManager().IsTimerActive(SpecialShotTimer))

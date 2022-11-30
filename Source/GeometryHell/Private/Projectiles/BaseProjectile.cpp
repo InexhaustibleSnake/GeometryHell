@@ -6,7 +6,7 @@
 
 ABaseProjectile::ABaseProjectile()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>("BoxCollision");
 	SetRootComponent(BoxCollision);
@@ -35,8 +35,4 @@ void ABaseProjectile::OnCollision(UPrimitiveComponent* OverlappedComponent, AAct
 	Destroy();
 }
 
-void ABaseProjectile::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
 

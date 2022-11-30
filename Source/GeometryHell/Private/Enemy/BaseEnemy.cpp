@@ -1,7 +1,6 @@
 // Project made by Alexey Guchmazov (Inexhaustible Snake) for educational purposes
 
 #include "Enemy/BaseEnemy.h"
-#include "Enemy/UI/BaseHealthBarWidget.h"
 #include "Components/TextRenderComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Projectiles/BaseProjectile.h"
@@ -11,6 +10,7 @@
 #include "Sound/SoundCue.h"
 #include "Kismet/GameplayStatics.h"
 #include "Logic/BaseGameMode.h"
+#include "Enemy/AI/BaseAIController.h"
 
 ABaseEnemy::ABaseEnemy()
 {
@@ -24,6 +24,8 @@ ABaseEnemy::ABaseEnemy()
 
 	HealthTextRender = CreateDefaultSubobject<UTextRenderComponent>("HealthTextRender");
 	HealthTextRender->SetupAttachment(GetRootComponent());
+
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
 void ABaseEnemy::BeginPlay()
@@ -50,8 +52,9 @@ void ABaseEnemy::OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageT
 		Destroy();
 		return;
 	}
-
+	HasEnemy = true;
 	UGameplayStatics::SpawnSoundAtLocation(GetWorld(), DamagedSound, GetOwner()->GetActorLocation());
+	UpdateControllerInfo();
 }
 
 void ABaseEnemy::StartFire()
@@ -70,5 +73,13 @@ void ABaseEnemy::StartFire()
 		Projectile->SetOwner(GetOwner());
 		Projectile->FinishSpawning(SpawnTransform);
 	}
+
+
 }
 
+void ABaseEnemy::UpdateControllerInfo()
+{
+	ABaseAIController* AIController = Cast<ABaseAIController>(GetController());
+
+	AIController->OnOwnerDamaged();
+}

@@ -16,7 +16,6 @@ class GEOMETRYHELL_API ABaseProjectile : public AActor
 	
 public:	
 	ABaseProjectile();
-	virtual void Tick(float DeltaTime) override;
 	virtual void BeginPlay() override;
 
 	void SetShotDirection(const FVector& Direction) { ShotDirection = Direction; }

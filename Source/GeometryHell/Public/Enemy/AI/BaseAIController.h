@@ -16,6 +16,8 @@ class GEOMETRYHELL_API ABaseAIController : public AAIController
 public:
 	ABaseAIController();
 
+	void OnOwnerDamaged();
+
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void BeginPlay() override;
@@ -30,10 +32,8 @@ protected:
 	UFUNCTION()
 	void ActorsUpdated(TArray<AActor*> const & UpdatedActors);
 
-	UFUNCTION()
-	void OnTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
-
 	bool SpotPlayer = false;
 
+	UFUNCTION()
 	void AddEnemiesInFight();
 };
