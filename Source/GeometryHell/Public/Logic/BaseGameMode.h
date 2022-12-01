@@ -26,17 +26,22 @@ public:
 
 	void PlayFightOst();
 
+	UFUNCTION()
+	void OnPlayerDeath();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Audio")
+		UAudioComponent* AudioComponent;
+
+protected:
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Audio")
 		USoundCue* FightOst;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
 		USoundCue* GameOverOst;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Audio")
-		UAudioComponent* AudioComponent;
-
-	UFUNCTION()
-	void OnPlayerDeath();
-
-protected:
 
 	int EnemyInFightAmount = 0;
+
+private:
+	void FadeMusicOut();
+	FTimerHandle FadeOutTimer;
 };

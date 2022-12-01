@@ -4,27 +4,27 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "BaseSpawnEnemies.generated.h"
+#include "BaseSetPlayingOst.generated.h"
 
 class UBoxComponent;
-class ABaseEnemy;
+class USoundCue;
 
 UCLASS()
-class GEOMETRYHELL_API ABaseSpawnEnemies : public AActor
+class GEOMETRYHELL_API ABaseSetPlayingOst : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
-	ABaseSpawnEnemies();
+	ABaseSetPlayingOst();
 
 protected:
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+		USoundCue* NewOst;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		UBoxComponent* BoxComponent;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn")
-	TMap<AActor*, TSubclassOf<ABaseEnemy>> SpawnData;
 
 	UFUNCTION()
 		virtual void OnPlayerOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

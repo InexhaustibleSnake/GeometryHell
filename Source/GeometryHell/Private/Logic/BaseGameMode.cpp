@@ -3,7 +3,6 @@
 #include "Logic/BaseGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
-#include "Sound/SoundBase.h"
 #include "Components/AudioComponent.h"
 #include "Engine/Engine.h"
 #include "Character/MainCharacter.h"
@@ -39,14 +38,13 @@ int ABaseGameMode::GetEnemiesInFight() const
 
 void ABaseGameMode::PlayFightOst()
 {
-	
 	if (EnemyInFightAmount == 1 && !AudioComponent->IsPlaying())
 	{
 		AudioComponent->Play(0.0f);
 	}
 	else if (EnemyInFightAmount == 0)
 	{
-		AudioComponent->FadeOut(6.0f, 0.01f, EAudioFaderCurve::Linear);
+		GetWorldTimerManager().SetTimer(FadeOutTimer, this, &ABaseGameMode::FadeMusicOut, 4.0f, false, 4.0f);
 	}
 	else if (AudioComponent->bIsFadingOut)
 	{
@@ -57,4 +55,12 @@ void ABaseGameMode::PlayFightOst()
 void ABaseGameMode::OnPlayerDeath()
 {
 	UGameplayStatics::PlaySound2D(GetWorld(), GameOverOst);
+}
+
+void ABaseGameMode::FadeMusicOut()
+{
+	if (GetEnemiesInFight() == 0)
+	{
+		AudioComponent->FadeOut(4.0f, 0.05f, EAudioFaderCurve::Linear);
+	}
 }

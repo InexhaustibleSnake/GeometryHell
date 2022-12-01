@@ -25,17 +25,37 @@ void ABaseSpawnEnemies::BeginPlay()
 void ABaseSpawnEnemies::OnPlayerOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	const auto Player = Cast<AMainCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-	if (!GetWorld() && !OtherActor->IsA(AMainCharacter::StaticClass()) && !Enemy) return;
+	if (!GetWorld() && !OtherActor->IsA(AMainCharacter::StaticClass())) return;
 
-	for (const auto Point : PointToSpawn)
+	for (const TPair<AActor*, TSubclassOf<ABaseEnemy>>& Pair : SpawnData)
 	{
-		FTransform SpawnTransform = Point->GetTransform();
-		
-		ABaseEnemy* SpawnedEnemy = GetWorld()->SpawnActorDeferred<ABaseEnemy>(Enemy, SpawnTransform);
+		FTransform SpawnTransForm = Pair.Key->GetTransform();
+
+		ABaseEnemy* SpawnedEnemy = GetWorld()->SpawnActorDeferred<ABaseEnemy>(Pair.Value, SpawnTransForm);
+
 		if (SpawnedEnemy)
 		{
-			SpawnedEnemy->FinishSpawning(SpawnTransform);
+			SpawnedEnemy->FinishSpawning(SpawnTransForm);
 		}
 	}
 	Destroy();
 }
+
+//void ABaseSpawnEnemies::OnPlayerOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+//{
+//	const auto Player = Cast<AMainCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+//	if (!GetWorld() && !OtherActor->IsA(AMainCharacter::StaticClass()) && !Enemy) return;
+//
+//	for (const auto Point : PointToSpawn)
+//	{
+//		FTransform SpawnTransform = Point->GetTransform();
+//		auto Point = SpawnData.Find(AActor::StaticClass());
+//
+//		ABaseEnemy* SpawnedEnemy = GetWorld()->SpawnActorDeferred<ABaseEnemy>(Enemy, SpawnTransform);
+//		if (SpawnedEnemy)
+//		{
+//			SpawnedEnemy->FinishSpawning(SpawnTransform);
+//		}
+//	}
+//	Destroy();
+//}

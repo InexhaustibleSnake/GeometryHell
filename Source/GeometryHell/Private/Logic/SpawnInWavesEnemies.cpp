@@ -10,7 +10,7 @@ void ASpawnInWavesEnemies::OnPlayerOverlap(UPrimitiveComponent* OverlappedCompon
 {   
 	const auto GameMode = Cast<ABaseGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	const auto Player = Cast<AMainCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-	if (!GetWorld() && !OtherActor->IsA(AMainCharacter::StaticClass()) && !Enemy) return;
+	if (!GetWorld() && !OtherActor->IsA(AMainCharacter::StaticClass())) return;
 
 	GetWorldTimerManager().SetTimer(ActivationTimer, this, &ASpawnInWavesEnemies::SpawnEnemies, 2.0f, true, 0.0f);
 }
@@ -20,19 +20,38 @@ void ASpawnInWavesEnemies::SpawnEnemies()
 	const auto GameMode = Cast<ABaseGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (GameMode->GetEnemiesInFight() > 0) return;
 
-	for (const auto Point : PointToSpawn)
+	for (const TPair<AActor*, TSubclassOf<ABaseEnemy>>& Pair : SpawnData)
 	{
-		FTransform SpawnTransform = Point->GetTransform();
+		FTransform SpawnTransForm = Pair.Key->GetTransform();
 
-		ABaseEnemy* SpawnedEnemy = GetWorld()->SpawnActorDeferred<ABaseEnemy>(Enemy, SpawnTransform);
+		ABaseEnemy* SpawnedEnemy = GetWorld()->SpawnActorDeferred<ABaseEnemy>(Pair.Value, SpawnTransForm);
+
 		if (SpawnedEnemy)
 		{
-			SpawnedEnemy->FinishSpawning(SpawnTransform);
+			SpawnedEnemy->FinishSpawning(SpawnTransForm);
 		}
 	}
-
 	DecreaseWaves();
 }
+
+//void ASpawnInWavesEnemies::SpawnEnemies()
+//{
+//	const auto GameMode = Cast<ABaseGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+//	if (GameMode->GetEnemiesInFight() > 0) return;
+//
+//	for (const auto Point : PointToSpawn)
+//	{
+//		FTransform SpawnTransform = Point->GetTransform();
+//
+//		ABaseEnemy* SpawnedEnemy = GetWorld()->SpawnActorDeferred<ABaseEnemy>(Enemy, SpawnTransform);
+//		if (SpawnedEnemy)
+//		{
+//			SpawnedEnemy->FinishSpawning(SpawnTransform);
+//		}
+//	}
+//
+//	DecreaseWaves();
+//}
 
 void ASpawnInWavesEnemies::DecreaseWaves()
 {

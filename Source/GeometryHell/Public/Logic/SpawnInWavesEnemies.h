@@ -21,12 +21,7 @@ protected:
 
 private:
 	void SpawnEnemies();
-
-
 	void DecreaseWaves();
 
-	int32 EnemiesInWave = PointToSpawn.Num();
-
 	FTimerHandle ActivationTimer;
-                
 };
