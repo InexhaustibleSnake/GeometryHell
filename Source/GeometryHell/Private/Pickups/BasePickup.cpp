@@ -36,6 +36,7 @@ void ABasePickup::Tick(float DeltaTime)
 void ABasePickup::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
+	if (!OtherActor->IsA(AMainCharacter::StaticClass())) return;
 
 	const auto Player = Cast<AMainCharacter>(OtherActor);
 

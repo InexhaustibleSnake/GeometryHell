@@ -14,7 +14,7 @@
 
 ABaseEnemy::ABaseEnemy()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	CannonCube = CreateDefaultSubobject<UStaticMeshComponent>("CannonCube");
 	CannonCube->SetupAttachment(GetRootComponent());
@@ -31,11 +31,12 @@ ABaseEnemy::ABaseEnemy()
 void ABaseEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	Health = MaxHealth;
 
 	GetWorld()->GetTimerManager().SetTimer(FireTimer, this, &ABaseEnemy::StartFire, FireRate, true, 0.0f);
 
 	OnTakeAnyDamage.AddDynamic(this, &ABaseEnemy::OnTakeDamage);
-	HealthTextRender->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
+	HealthTextRender->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), MaxHealth)));
 }
 
 void ABaseEnemy::OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
@@ -73,8 +74,6 @@ void ABaseEnemy::StartFire()
 		Projectile->SetOwner(GetOwner());
 		Projectile->FinishSpawning(SpawnTransform);
 	}
-
-
 }
 
 void ABaseEnemy::UpdateControllerInfo()

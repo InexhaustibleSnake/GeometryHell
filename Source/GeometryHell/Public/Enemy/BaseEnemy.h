@@ -42,7 +42,10 @@ protected:
 		UTextRenderComponent* HealthTextRender;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Properities")
-		float Health = 100.0f;
+		float MaxHealth = 100.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Properities")
+		float Health;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Properities")
 		float FireRate = 1.0f;
