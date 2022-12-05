@@ -2,11 +2,6 @@
 
 #include "Projectiles/SpecialProjectile.h"
 
-void ASpecialProjectile::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
 void ASpecialProjectile::OnCollision(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit)
 {
 
