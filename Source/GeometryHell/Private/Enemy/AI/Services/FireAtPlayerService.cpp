@@ -18,7 +18,7 @@ void UFireAtPlayerService::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* No
 
 	const auto EnemyOwner = Cast<ABaseEnemy>(OwnerComp.GetAIOwner());
 
-	EnemyOwner->StartFire();
+//	EnemyOwner->StartFire();
 
 	/*bool HasAim = Blackboard && Blackboard->GetValueAsObject(PlayerActorKey.SelectedKeyName);
 

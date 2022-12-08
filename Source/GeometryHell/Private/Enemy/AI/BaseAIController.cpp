@@ -27,10 +27,9 @@ void ABaseAIController::OnPossess(APawn* InPawn)
 
 void ABaseAIController::BeginPlay()
 {
-    Super::BeginPlay();
+   Super::BeginPlay();
 
    GetPerceptionComponent()->OnPerceptionUpdated.AddDynamic(this, &ABaseAIController::ActorsUpdated);
-
 }
 
 void ABaseAIController::Tick(float DeltaTime)

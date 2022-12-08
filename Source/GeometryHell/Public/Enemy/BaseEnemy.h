@@ -21,13 +21,17 @@ class GEOMETRYHELL_API ABaseEnemy : public ACharacter
 public:
 	ABaseEnemy();
 
+	FTimerHandle FireTimer;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
 		UBehaviorTree* BehaviorTreeAsset;
 
-	void StartFire();
-
+	virtual void StartFire();
+	UFUNCTION()
+		virtual void OnTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
 	bool HasEnemy = false;
+	bool CanShoot = true;
 
 protected:
 	virtual void BeginPlay() override;
@@ -50,7 +54,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Properities")
 		float FireRate = 1.0f;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Projectile")
 		TSubclassOf<ABaseProjectile> MainProjectile;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Audio")
@@ -61,11 +65,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Audio")
 		USoundCue* DeathSound;
-
-	FTimerHandle FireTimer;
-
-   UFUNCTION()
-	  void OnTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
 private:
 	void UpdateControllerInfo();

@@ -34,6 +34,12 @@ void UWeaponComponent::StopFire()
 
 void UWeaponComponent::MainShot()
 {
+	if (!Player || Player->InBossTimeStop)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(ShootTimer);
+		return;
+	}
+
 	FVector TraceStart, TraceEnd;
 
 	GetPlayerViewPoint(TraceStart, TraceEnd);
@@ -49,8 +55,7 @@ void UWeaponComponent::MainShot()
 	{
 		UGameplayStatics::SpawnSoundAtLocation(GetWorld(), ShootAudio, GetOwner()->GetActorLocation());
 
-		const auto MainCharacter = Cast<AMainCharacter>(GetOwner());
-		if (MainCharacter->CustomTimeDilation > 1) 
+		if (Player->CustomTimeDilation > 1) 
 		{
 			BaseProjectile->SetDamage(BaseProjectile->Damage * 1.5);
 		}
@@ -62,7 +67,7 @@ void UWeaponComponent::MainShot()
 
 void UWeaponComponent::SpecialShot()
 {
-	if (NumOfSpecialShots == 0) return;
+	if (NumOfSpecialShots == 0 || Player->InBossTimeStop) return;
 	FVector TraceStart, TraceEnd;
 
 	GetPlayerViewPoint(TraceStart, TraceEnd);
@@ -112,8 +117,7 @@ void UWeaponComponent::GetPlayerViewPoint(FVector& TraceStart, FVector& TraceEnd
 	FVector ViewLocation;
 	FRotator ViewRotation;
 
-	const auto PlayerCharacter = Cast<AMainCharacter>(GetOwner());
-	PlayerCharacter->GetController()->GetPlayerViewPoint(ViewLocation, ViewRotation);
+	Player->GetController()->GetPlayerViewPoint(ViewLocation, ViewRotation);
 
 	TraceStart = ViewLocation;
 	TraceEnd = ViewLocation + ViewRotation.Vector() * 16000.0f;
@@ -128,6 +132,5 @@ void UWeaponComponent::MakeTrace(FHitResult& HitResult, const FVector TraceStart
 
 FVector UWeaponComponent::GetMuzzleWorldLocation()
 {
-	const auto PlayerCharacter = Cast<AMainCharacter>(GetOwner());
-	return PlayerCharacter->GunMesh->GetSocketLocation("Muzzle");
+	return Player->GunMesh->GetSocketLocation("Muzzle");
 }

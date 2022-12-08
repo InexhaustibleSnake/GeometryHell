@@ -26,6 +26,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		USkeletalMeshComponent* GunMesh;
 
+	bool InBossTimeStop = false;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -45,6 +47,8 @@ protected:
 private:
 	void MoveForward(float Amount);
 	void MoveRight(float Amount);
+	void MouseX(float Amount);
+	void MouseY(float Amount);
 
 	FTimerHandle DelayTimer;
 

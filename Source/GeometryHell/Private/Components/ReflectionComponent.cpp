@@ -67,11 +67,9 @@ void UReflectionComponent::RestoreReflectionStamina()
 void UReflectionComponent::UltraReflectionOn()
 {
 	auto Player = Cast<AMainCharacter>(GetOwner());
-
-	if (IsReflectionActive || !Player->GetCharacterMovement()->Velocity.IsZero()) return;
+	if (!Player || Player->InBossTimeStop || IsReflectionActive || !Player->GetCharacterMovement()->Velocity.IsZero()) return;
 
 	GetWorld()->GetTimerManager().SetTimer(ReflectionTimer, this, &UReflectionComponent::ReduceUltraReflectionStamina, UltraReflectionStaminaReduceRate, true, 0.0f);
-
 
 	Player->CustomTimeDilation = PlayerDilationOnUltra;
 	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), UltraReflectionPower);
@@ -98,11 +96,11 @@ void UReflectionComponent::ReduceUltraReflectionStamina()
 
 void UReflectionComponent::UltraReflectionOff()
 {
-	if (IsReflectionActive) return;
+	auto Player = Cast<AMainCharacter>(GetOwner());
+	if (IsReflectionActive || !Player || Player->InBossTimeStop) return;
 
 	GetWorld()->GetTimerManager().SetTimer(ReflectionTimer, this, &UReflectionComponent::RestoreReflectionStamina, ReflectionStaminaRestoreRate, true, 0.0f);
 
-	auto Player = Cast<AMainCharacter>(GetOwner());
 	Player->CustomTimeDilation = 1.0f;
 
 	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1.0f);

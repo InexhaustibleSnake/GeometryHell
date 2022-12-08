@@ -64,16 +64,30 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &AMainCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AMainCharacter::MoveRight);
-	PlayerInputComponent->BindAxis("MouseX", this, &AMainCharacter::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("MouseY", this, &AMainCharacter::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("MouseX", this, &AMainCharacter::MouseX);
+	PlayerInputComponent->BindAxis("MouseY", this, &AMainCharacter::MouseY);
 }
 
 void AMainCharacter::MoveForward(float Amount)
 {
+	if (InBossTimeStop) return;
 	AddMovementInput(GetActorForwardVector(), Amount);
 }
 
 void AMainCharacter::MoveRight(float Amount)
 {
+	if (InBossTimeStop) return;
 	AddMovementInput(GetActorRightVector(), Amount);
+}
+
+void AMainCharacter::MouseX(float Amount)
+{
+	if (InBossTimeStop) return;
+	AddControllerYawInput(Amount);
+}
+
+void AMainCharacter::MouseY(float Amount)
+{
+	if (InBossTimeStop) return;
+	AddControllerPitchInput(Amount);
 }

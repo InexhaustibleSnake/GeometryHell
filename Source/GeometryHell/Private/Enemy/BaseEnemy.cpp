@@ -33,7 +33,7 @@ void ABaseEnemy::BeginPlay()
 	Super::BeginPlay();
 	Health = MaxHealth;
 
-	GetWorld()->GetTimerManager().SetTimer(FireTimer, this, &ABaseEnemy::StartFire, FireRate, true, 0.0f);
+	GetWorldTimerManager().SetTimer(FireTimer, this, &ABaseEnemy::StartFire, FireRate, true, 0.0f);
 
 	OnTakeAnyDamage.AddDynamic(this, &ABaseEnemy::OnTakeDamage);
 	HealthTextRender->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), MaxHealth)));
@@ -61,7 +61,7 @@ void ABaseEnemy::OnTakeDamage(AActor* DamagedActor, float Damage, const UDamageT
 void ABaseEnemy::StartFire()
 {
 	const auto AIPerception = Cast<UBaseAIPerceptionComponent>(GetController());
-	if (!HasEnemy) return;
+	if (!HasEnemy && !CanShoot) return;
 
 	const FTransform SpawnTransform(FRotator::ZeroRotator, ShootPoint->GetComponentLocation());
 

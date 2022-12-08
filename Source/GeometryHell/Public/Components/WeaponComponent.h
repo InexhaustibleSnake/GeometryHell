@@ -4,10 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Character/MainCharacter.h"
 #include "WeaponComponent.generated.h"
 
 class ABaseProjectile;
 class USoundCue;
+//class AMainCharacter;
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class GEOMETRYHELL_API UWeaponComponent : public UActorComponent
@@ -56,6 +58,8 @@ private:
 	void MakeTrace(FHitResult& HitResult, const FVector TraceStart, const FVector TraceEnd);
 	void GetPlayerViewPoint(FVector& TraceStart, FVector& TraceEnd);
 	void SpecialShotRestore();
+
+	AMainCharacter* Player = Cast<AMainCharacter>(GetOwner());;
 
 	FVector GetMuzzleWorldLocation();
 };

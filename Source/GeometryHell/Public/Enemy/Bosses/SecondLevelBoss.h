@@ -13,7 +13,6 @@ class GEOMETRYHELL_API ASecondLevelBoss : public ABaseEnemy
 
 public:
 
-
 	UFUNCTION(BlueprintCallable)
 	float GetHealthPercent() const;
 	
