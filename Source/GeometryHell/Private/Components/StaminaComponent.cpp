@@ -19,7 +19,7 @@ void UStaminaComponent::BeginPlay()
 void UStaminaComponent::Sprint()
 {
 	const auto MainCharacter = Cast<AMainCharacter>(GetOwner());
-	if (!MainCharacter || !GetWorld()) return;
+	if (!MainCharacter || !GetWorld() || !CanRun) return;
 
 	MainCharacter->GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
 	GetWorld()->GetTimerManager().SetTimer(StaminaTimer, this, &UStaminaComponent::StaminaReduce, StaminaReduceRate, true, 0.0f);
@@ -28,7 +28,7 @@ void UStaminaComponent::Sprint()
 void UStaminaComponent::StopSprinting()
 {
 	const auto MainCharacter = Cast<AMainCharacter>(GetOwner());
-	if (!MainCharacter || !GetWorld()) return;
+	if (!MainCharacter || !GetWorld() || !CanRun) return;
 
 	MainCharacter->GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 	GetWorld()->GetTimerManager().SetTimer(StaminaTimer, this, &UStaminaComponent::StaminaRecover, StaminaRecoverRate, true, 0.0f);

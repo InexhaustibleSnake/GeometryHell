@@ -14,9 +14,11 @@ class GEOMETRYHELL_API UStaminaComponent : public UActorComponent
 
 public:	
 	UStaminaComponent();
-
 	void Sprint();
 	void StopSprinting();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement")
+		bool CanRun = true;
 
 protected:
 	virtual void BeginPlay() override;
