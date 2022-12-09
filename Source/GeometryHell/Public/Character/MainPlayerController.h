@@ -6,8 +6,6 @@
 #include "GameFramework/PlayerController.h"
 #include "MainPlayerController.generated.h"
 
-
-
 UCLASS()
 class GEOMETRYHELL_API AMainPlayerController : public APlayerController
 {
